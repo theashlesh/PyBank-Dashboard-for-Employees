@@ -1,0 +1,21 @@
+{% extends "bank/base.html" %}
+{% block title %}Dashboard - PyBank{% endblock %}
+{% block content %}
+<div class="heading">
+  <div><h1>Welcome, {{ request.user.get_short_name|default:request.user.username }}</h1><p class="muted">Employee dashboard overview</p></div>
+  <a class="button" href="{% url 'customer_create' %}">+ New customer</a>
+</div>
+<div class="cards">
+  <div class="card"><div class="label">Total customers</div><div class="metric">{{ total_customers }}</div></div>
+  <div class="card"><div class="label">Total customer balances</div><div class="metric green">₹{{ total_balance|floatformat:2 }}</div></div>
+  <div class="card"><div class="label">Recorded transactions</div><div class="metric">{{ total_transactions }}</div></div>
+</div>
+<section class="panel">
+  <div class="heading"><div><h2>Recent transactions</h2><p class="muted">Latest recorded account activity</p></div><a href="{% url 'transaction_list' %}">View all</a></div>
+  <div class="table-wrap"><table><thead><tr><th>Type</th><th>From</th><th>To</th><th>Amount</th><th>Date</th></tr></thead><tbody>
+  {% for t in recent_transactions %}
+  <tr><td>{{ t.get_transaction_type_display }}</td><td>{% if t.from_customer %}<a href="{% url 'customer_detail' t.from_customer.pk %}">{{ t.from_customer.cust_name }}</a>{% else %}—{% endif %}</td><td>{% if t.to_customer %}<a href="{% url 'customer_detail' t.to_customer.pk %}">{{ t.to_customer.cust_name }}</a>{% else %}—{% endif %}</td><td>₹{{ t.amount|floatformat:2 }}</td><td>{{ t.created_at|date:"d M Y, H:i" }}</td></tr>
+  {% empty %}<tr><td colspan="5" class="empty">No transactions yet.</td></tr>{% endfor %}
+  </tbody></table></div>
+</section>
+{% endblock %}

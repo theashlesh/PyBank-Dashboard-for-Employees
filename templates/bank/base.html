@@ -1,0 +1,38 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}PyBank{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'bank.css' %}">
+</head>
+<body>
+{% if request.user.is_authenticated and request.user.is_staff %}
+<nav>
+  <a class="brand" href="{% url 'dashboard' %}">PyBank</a>
+  <ul>
+    <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
+    <li><a href="{% url 'customer_list' %}">Customers</a></li>
+    <li><a href="{% url 'customer_create' %}">New account</a></li>
+    <li><a href="{% url 'deposit' %}">Deposit</a></li>
+    <li><a href="{% url 'withdraw' %}">Withdraw</a></li>
+    <li><a href="{% url 'transfer' %}">Transfer</a></li>
+    <li><a href="{% url 'transaction_list' %}">Transactions</a></li>
+    <li>
+      <form class="nav-form" method="post" action="{% url 'logout' %}">
+        {% csrf_token %}<button class="nav-button" type="submit">Logout</button>
+      </form>
+    </li>
+  </ul>
+</nav>
+{% endif %}
+<main class="{% block main_class %}container{% endblock %}">
+  {% if messages %}
+    <ul class="messages">{% for message in messages %}<li class="{{ message.tags }}">{{ message }}</li>{% endfor %}</ul>
+  {% endif %}
+  {% block content %}{% endblock %}
+</main>
+<footer>PyBank learning project · Use fictional data only</footer>
+</body>
+</html>

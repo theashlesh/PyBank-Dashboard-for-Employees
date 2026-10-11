@@ -1,0 +1,10 @@
+{% extends "bank/base.html" %}
+{% block title %}Customers - PyBank{% endblock %}
+{% block content %}
+<div class="heading"><div><h1>Customers</h1><p class="muted">Search and manage customer accounts.</p></div><a class="button" href="{% url 'customer_create' %}">+ New customer</a></div>
+<form method="get" class="inline-search"><input name="q" value="{{ q }}" placeholder="Search name, account number, or mobile"><button class="button">Search</button></form>
+<section class="panel" style="margin-top:20px"><div class="table-wrap"><table><thead><tr><th>Name</th><th>Account number</th><th>Mobile</th><th>Balance</th><th></th></tr></thead><tbody>
+{% for c in customers %}<tr><td>{{ c.cust_name }}</td><td>{{ c.account_no }}</td><td>{{ c.mob_no|default:"—" }}</td><td>₹{{ c.balance|floatformat:2 }}</td><td><a href="{% url 'customer_detail' c.pk %}">Open</a></td></tr>
+{% empty %}<tr><td colspan="5" class="empty">No customers found.</td></tr>{% endfor %}
+</tbody></table></div></section>
+{% endblock %}

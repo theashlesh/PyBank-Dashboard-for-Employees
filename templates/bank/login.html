@@ -1,0 +1,19 @@
+{% extends "bank/base.html" %}
+{% block title %}Employee Login - PyBank{% endblock %}
+{% block main_class %}login-wrap{% endblock %}
+{% block content %}
+<div class="login-brand"><div class="brand">PyBank</div><p class="muted">Employee banking portal</p></div>
+<section class="panel">
+  <h1>Employee login</h1>
+  <h4>username: ashlesh</h4>
+  <h4>password: ash12@21</h4>
+  <p class="muted">Sign in with an authorized staff account.</p>
+  {% if messages %}{% for message in messages %}<p class="form-errors">{{ message }}</p>{% endfor %}{% endif %}
+  <form class="stack" method="post">
+    {% csrf_token %}
+    <div><label for="username">Username</label><input id="username" name="username" autocomplete="username" required autofocus></div>
+    <div><label for="password">Password</label><input id="password" name="password" type="password" autocomplete="current-password" required></div>
+    <button class="button" type="submit">Sign in</button>
+  </form>
+</section>
+{% endblock %}

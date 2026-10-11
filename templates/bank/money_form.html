@@ -1,0 +1,10 @@
+{% extends "bank/base.html" %}
+{% block title %}{{ heading }} - PyBank{% endblock %}
+{% block content %}
+<div class="heading"><div><h1>{{ heading }}</h1><p class="muted">Enter the account number and amount carefully.</p></div></div>
+<section class="panel"><form method="post" class="stack">{% csrf_token %}
+  {% for field in form %}<div><label for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field }}{% for error in field.errors %}<p class="form-errors">{{ error }}</p>{% endfor %}</div>{% endfor %}
+  {% if form.non_field_errors %}<div class="form-errors">{{ form.non_field_errors }}</div>{% endif %}
+  <div class="actions"><button class="button" type="submit">{{ button }}</button><a class="button secondary" href="{% url 'dashboard' %}">Cancel</a></div>
+</form></section>
+{% endblock %}

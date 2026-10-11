@@ -1,0 +1,9 @@
+{% extends "bank/base.html" %}
+{% block title %}Transactions - PyBank{% endblock %}
+{% block content %}
+<div class="heading"><div><h1>Transactions</h1><p class="muted">Latest 100 recorded transactions.</p></div><div class="actions"><a class="button" href="{% url 'deposit' %}">Deposit</a><a class="button secondary" href="{% url 'withdraw' %}">Withdraw</a><a class="button secondary" href="{% url 'transfer' %}">Transfer</a></div></div>
+<section class="panel"><div class="table-wrap"><table><thead><tr><th>ID</th><th>Type</th><th>From account</th><th>To account</th><th>Amount</th><th>Employee</th><th>Date</th></tr></thead><tbody>
+{% for t in transactions %}<tr><td>{{ t.pk }}</td><td>{{ t.get_transaction_type_display }}</td><td>{% if t.from_customer %}<a href="{% url 'customer_detail' t.from_customer.pk %}">{{ t.from_customer.account_no }}</a>{% else %}—{% endif %}</td><td>{% if t.to_customer %}<a href="{% url 'customer_detail' t.to_customer.pk %}">{{ t.to_customer.account_no }}</a>{% else %}—{% endif %}</td><td>₹{{ t.amount|floatformat:2 }}</td><td>{{ t.created_by.username|default:"—" }}</td><td>{{ t.created_at|date:"d M Y, H:i" }}</td></tr>
+{% empty %}<tr><td colspan="7" class="empty">No transactions recorded.</td></tr>{% endfor %}
+</tbody></table></div></section>
+{% endblock %}
